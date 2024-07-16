@@ -1,14 +1,13 @@
-import logo from './logo.svg';
 import './App.css';
 
-import MyButton from './Components/client';
-import Try from './Components/try';
+import DownloadButton from './Components/DownloadButton';
 
 function App() {
   return (
     <div className="App">
       {/* <MyButton></MyButton> */}
-      <Try></Try>
+      <DownloadButton></DownloadButton>
+      {/* <Try></Try> */}
     </div>
   );
 }
