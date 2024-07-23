@@ -2,8 +2,24 @@ import axios from "axios"
 import { useState } from "react"
 import { createUseStyles } from "react-jss";
 import LOGO from "../assets/ready_logo.jpg"
+import { css } from "@emotion/react";
+import ClipLoader from "react-spinners/ClipLoader";
+
+
 
 const useStyles = createUseStyles({
+
+    override:{
+        display: "block",
+        margin: "0 auto",
+        borderColor: "red"
+    },
+    spinner_container:{   
+        display: 'flex',  
+        justifyContent: "center", 
+        alignItems: "center",  
+        height: "20vh"
+    },
     h4:{
         fontSize: 40,
         textAlign: 'center',
@@ -70,6 +86,8 @@ const DownloadButton = () =>{
     const [year, setYear] = useState('')
     const [empFile, setEmpFile] = useState(null)
     const [repFile, setRepFile] = useState(null)
+    const [loading, setLoading] = useState(false)
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();   
@@ -78,6 +96,8 @@ const DownloadButton = () =>{
         formData.append('repFile', repFile);         
         formData.append('month', month); 
         formData.append('year', year);
+
+        setLoading(true)
        
         axios({
             url:'http://127.0.0.1:5000/download_report_file/',
@@ -94,9 +114,14 @@ const DownloadButton = () =>{
             document.body.appendChild(link)
             link.click()
             document.body.removeChild(link)
+            setLoading(false)
+            alert("הקובץ הורד בהצלחה!")
         })
         .catch((error)=>{
             console.error('Error downloading file:', error)
+        })
+        .finally(() =>{
+            setLoading(false)
         })
 
     }
@@ -126,6 +151,11 @@ const DownloadButton = () =>{
                 </div>
                 <button className={css.button} type="submit">להורדת הקובץ</button>
             </form>
+            {loading && (
+                <div className={css.spinner_container}>
+                <ClipLoader color={"#123abc"} loading={loading} className={css.override} size={150} />
+                </div>
+                    )}
         </div>
     
     )
